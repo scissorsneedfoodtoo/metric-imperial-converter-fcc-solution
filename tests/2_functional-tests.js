@@ -3,7 +3,9 @@
 *
 *       FILL IN EACH FUNCTIONAL TEST BELOW COMPLETELY
 *       -----[Keep the tests in the same order!]-----
-*       (if additional are added, keep them at the very end!)
+*       If additional tests are added, keep them at the very end
+*
+*
 */
 
 const chaiHttp = require('chai-http');
@@ -23,7 +25,7 @@ suite('Functional Tests', function() {
        chai.request(server)
         .get('/api/convert')
         .query({input: '10L'})
-        .end(function(err, res){
+        .end((err, res) => {
           assert.equal(res.status, 200);
           assert.equal(res.body.initNum, 10);
           assert.equal(res.body.initUnit.toLowerCase(), 'l'); // Ignore case
@@ -37,30 +39,30 @@ suite('Functional Tests', function() {
         chai.request(server)
         .get('/api/convert')
         .query({input: '32g'})
-        .end(function(err, res){
-          assert.equal(res.status, 400);
-          assert.equal(res.body.error, "invalid unit")
+        .end((err, res) => {
+          assert.strictEqual(res.status, 400);
+          assert.strictEqual(res.body.error, "Invalid unit");
           done();
         });
       });
-      
-      // // Still discussing how to handle double fractions
-      // test('Convert 3/7.2/4kg (invalid number)', function(done) {
-      //   chai.request(server)
-      //   .get('/api/convert')
-      //   .query({input: '3/7.2/4kg'})
-      //   .end(function(err, res){
-      //     done();
-      //   });
-      // });  
+
+      test('Convert 3a16kg', function(done) {
+        chai.request(server)
+          .get('/api/convert')
+          .query({input: '3a16kg'})
+          .end((err, res) =>  {
+            assert.strictEqual(res.body.error, 'Invalid number');
+            done();
+          });
+      });
       
       test('Convert 1a4kkg (invalid number and unit)', function(done) {
         chai.request(server)
         .get('/api/convert')
         .query({input: '1a4kkg'})
-        .end(function(err, res){
-          assert.equal(res.status, 400);
-          assert.equal(res.body.error, "invalid number and unit")
+        .end((err, res) => {
+          assert.strictEqual(res.status, 400);
+          assert.strictEqual(res.body.error, "Invalid number and unit");
           done();
         });
       });
@@ -69,12 +71,12 @@ suite('Functional Tests', function() {
         chai.request(server)
         .get('/api/convert')
         .query({input: 'kg'})
-        .end(function(err, res){
-          assert.equal(res.status, 200);
-          assert.equal(res.body.initNum, 1);
-          assert.equal(res.body.initUnit.toLowerCase(), 'kg'); // Ignore case
+        .end((err, res) => {
+          assert.strictEqual(res.status, 200);
+          assert.strictEqual(res.body.initNum, 1);
+          assert.strictEqual(res.body.initUnit.toLowerCase(), 'kg'); // Ignore case
           assert.approximately(res.body.returnNum, 2.20462, 0.1);
-          assert.equal(res.body.returnUnit, 'lbs');
+          assert.strictEqual(res.body.returnUnit, 'lbs');
           done();
         });
       });

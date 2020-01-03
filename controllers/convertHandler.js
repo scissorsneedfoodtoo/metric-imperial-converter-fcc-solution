@@ -11,7 +11,7 @@ const math = require('mathjs');
 function ConvertHandler() {
 
   this.getNum = function(input) {
-    if (!input) return 'invalid number and unit'
+    if (!input) return 'Invalid number and unit'
     const numReg = /[\d./]+/g;
     // Input has no number, only a unit
     if (input.match(numReg) === null) return 1;
@@ -23,7 +23,7 @@ function ConvertHandler() {
     
     const letterRegex=/[a-zA-Z]+/;
     // Input is something like '1a3lbs' or 'a4gal'
-    if (numOrEq.match(letterRegex)) return 'invalid number';
+    if (numOrEq.match(letterRegex)) return 'Invalid number';
     
     const result = math.evaluate(numOrEq);
     
@@ -31,7 +31,7 @@ function ConvertHandler() {
   };
 
   this.getUnit = function(input) {
-    if (!input) return 'invalid number and unit'
+    if (!input) return 'Invalid number and unit'
     const allowedUnits=['gal','l','mi','km','lbs','kg','L'];
     var result;
     let unitReg=/[a-zA-Z]+$/
